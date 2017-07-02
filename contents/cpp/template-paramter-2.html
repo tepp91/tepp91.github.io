@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>テンプレート引数で異なるクラスを扱う</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+<form id="search" action"#" onsubmit="javascript:window.open('https://duckduckgo.com/?q='+document.getElementById('keywords').value+'+site:');">
+                        <input id="keywords" type="text" />
+                    </form>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/cpp/template-paramter-2.html" rel="bookmark"
+		  title="Permalink to テンプレート引数で異なるクラスを扱う">テンプレート引数で異なるクラスを扱う</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: C++</span>
+<span>| 2017-06-27</span>
+
+</footer><!-- /.post-info -->      <p>templateによるキャストなどの際に使用します。  </p>
+<div class="gist">
+    <script src='https://gist.github.com/fe57371579558c39c506ac379aacdb69.js'></script>
+    <noscript>
+        <pre><code>#include <iostream>
+
+template<class T>
+class Hoge{
+public:
+	template<class U>
+	Hoge<T>& operator=( const Hoge<U>& rhs );
+
+public:
+	T value_;
+};
+
+template<class T> template<class U>
+inline Hoge<T>& Hoge<T>::operator=( const Hoge<U>& rhs )
+{
+	value_ = static_cast<T>(rhs.value_);
+	return *this;
+}
+
+int main()
+{
+	Hoge<int> hogeInt;
+	hogeInt.value_ = 1;
+
+	Hoge<float> hogeFloat;
+	hogeFloat.value_ = 2.f;
+
+	hogeFloat = hogeInt; // hogeFLoat = 1
+
+	return 0;</code></pre>
+    </noscript>
+</div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

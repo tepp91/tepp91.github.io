@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>2の累乗か判定する</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+<form id="search" action"#" onsubmit="javascript:window.open('https://duckduckgo.com/?q='+document.getElementById('keywords').value+'+site:');">
+                        <input id="keywords" type="text" />
+                    </form>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/cpp/power-of-two.html" rel="bookmark"
+		  title="Permalink to 2の累乗か判定する">2の累乗か判定する</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: C++</span>
+<span>| 2017-06-20</span>
+
+</footer><!-- /.post-info -->      <div class="gist">
+    <script src='https://gist.github.com/a4754392f6c51b80333f11afd9bc4fd2.js'></script>
+    <noscript>
+        <pre><code>bool IsPowerOfTwo(uint32_t value)
+{
+    return value && !(value & (value-1))
+}</code></pre>
+    </noscript>
+</div>
+<p>2の累乗ということは、ビット演算的には1が一つだけの状態です。  </p>
+<p>2の累乗の場合、<br>
+-1すると繰り下がって下位ビットが全部1になるため、AND演算すると0になります。  </p>
+<p>2の累乗以外なら、<br>
+-1しても桁下がり発生しないため、AND演算にすれば1以上になります。  </p>
+<p>ただ0はアンダーフローによりうまくいかないので、最初に弾いています。  </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
