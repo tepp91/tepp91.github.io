@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content_title %}{% endblock %}
+{% block content %}
+
+<section id="featured" class="body">
+    <div class="desc">{{ SITEDESC }}</div>
+	<footer class="post-info"></footer>
+    {% if categories %}
+        {% for category, articles in categories %}
+        <ul class="category">
+            <li>
+                {{ category.name }}
+                <ul>
+                    {% for article in articles %}
+                        <li><a href="{{ article.url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+</section>
+
+{% endblock %}
