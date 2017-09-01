@@ -11,7 +11,7 @@
             <li>
                 {{ category.name }}
                 <ul>
-                    {% for article in articles %}
+                    {% for article in articles|sort(attribute='date') %}
                         <li><a href="{{ article.url }}">{{ article.title }}</a></li>
                     {% endfor %}
                 </ul>
