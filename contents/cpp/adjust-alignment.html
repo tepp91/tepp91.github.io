@@ -2,7 +2,7 @@
 <html lang="japanese">
 <head>
         <meta charset="utf-8" />
-        <title>Tepp's note</title>
+        <title>アライメントを考慮したサイズの取得</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
@@ -22,22 +22,45 @@
                 </nav>
         </header><!-- /#banner -->
 
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/cpp/adjust-alignment.html" rel="bookmark"
+		  title="Permalink to アライメントを考慮したサイズの取得">アライメントを考慮したサイズの取得</a>
+	  </h1>
+    </header>
 
-<section id="featured" class="body">
-    <div class="desc">ソフトウェア（主にゲーム）開発中に調べた事を、備忘録として記録しているWebサイトです。</div>
-	<footer class="post-info"></footer>
-        <ul class="category">
-            <li>
-                C++
-                <ul>
-                        <li><a href="contents/cpp/power-of-two.html">2の累乗か判定する</a></li>
-                        <li><a href="contents/cpp/template-paramter-2.html">テンプレート引数で異なるクラスを扱う</a></li>
-                        <li><a href="contents/cpp/adjust-alignment.html">アライメントを考慮したサイズの取得</a></li>
-                </ul>
-            </li>
-        </ul>
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: C++</span>
+<span>| 2017-09-01</span>
+
+</footer><!-- /.post-info -->      <p>メモリの確保などでアライメントを考慮したサイズを取得したい場合などに使用します。<br>
+アルゴリズムとしては四捨五入と同じような感じです。  </p>
+<div class="gist">
+    <script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js'></script>
+    <noscript>
+        <pre><code>/**
+ * アライメントを考慮したサイズを返す
+ * @param num       数値
+ * @param alignment アライメント(2の累乗の必要あり)
+ * @return 調整後のサイズ
+ */
+inline uint32_t AdjustAlignment( uint32_t size, uint32_t alignment )
+{
+	if( size > 0 )
+	{
+		return ( size+(alignment-1) & ~(alignment-1) );
+	}
+	return 0;
+}</code></pre>
+    </noscript>
+</div>
+    </div><!-- /.entry-content -->
+
+  </article>
 </section>
-
         <section id="extras" class="body">
                 <div class="social">
                     <a href="https://twitter.com/DevTepp"></a>
