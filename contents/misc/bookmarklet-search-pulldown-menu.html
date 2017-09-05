@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>プルダウンメニューの項目を検索するBookmarklet</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+<form id="search" action"#" onsubmit="javascript:window.open('https://duckduckgo.com/?q='+document.getElementById('keywords').value+'+site:');">
+                        <input id="keywords" type="text" />
+                    </form>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/misc/bookmarklet-search-pulldown-menu.html" rel="bookmark"
+		  title="Permalink to プルダウンメニューの項目を検索するBookmarklet">プルダウンメニューの項目を検索するBookmarklet</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: Misc</span>
+<span>| 2017-09-05</span>
+
+</footer><!-- /.post-info -->      <p>数が多いプルダウンメニューから素早く項目を見つけることが出来るブックマークレットです。  </p>
+<div class="gist">
+    <script src='https://gist.github.com/795af63ccc8a98fe6cf2f09241dcb777.js'></script>
+    <noscript>
+        <pre><code>javascript:(function (){var q=String.fromCharCode(39);var s=document.getElementsByTagName('SELECT');for(var i=0;i<s.length;i++){ var a = document.createElement('div');s[i].parentNode.insertBefore(a,s[i].nextSibling);a.innerHTML='<input onkeyup="var s=document.getElementsByTagName('+q+'SELECT'+q+')['+i+'];if(!s.a){var original=s.options;s.a=new Array(original.length);for(var i=0;i<s.a.length;i++){s.a[i]=s.options.item(i);}}s.length=0;for(var i=0;i<s.a.length;i++){if(-1!=(s.a[i].text).toLowerCase().indexOf(this.value)){s[s.length]=s.a[i];}}if(this.value.length==0){s.a=null};">';}})()</code></pre>
+    </noscript>
+</div>
+<p>こちらから引用させて頂きました。<br>
+<a href="http://samuraism.jp/diary/2007/05/08/1178596172277.html">#侍ズム：htmlのセレクト要素をインクリメンタルサーチするbookmarklet</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
