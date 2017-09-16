@@ -34,12 +34,14 @@
     <div class="entry-content">
 <footer class="post-info">
 <span>category: C++</span>
-<span>| 2017-09-01</span>
+<span>| 2017-09-17</span>
 
-</footer><!-- /.post-info -->      <p>メモリの確保などでアライメントを考慮したサイズを取得したい場合などに使用します。<br>
-アルゴリズムとしては四捨五入と同じような感じです。  </p>
+</footer><!-- /.post-info -->      <p>メモリの確保などでアライメントを考慮したサイズを取得したい場合などに使用します。  </p>
+<h2>ビット演算による求め方</h2>
+<p>アライメントの値が2の累乗であれば、ビット演算による高速な方法があります。<br>
+アルゴリズムとしては四捨五入と同じような感じです(ギリギリまで上げて落とす)   </p>
 <div class="gist">
-    <script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js'></script>
+    <script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=AdjustAlignment.cpp'></script>
     <noscript>
         <pre><code>/**
  * アライメントを考慮したサイズを返す
@@ -55,6 +57,51 @@ inline uint32_t AdjustAlignment( uint32_t size, uint32_t alignment )
 	}
 	return 0;
 }</code></pre>
+    </noscript>
+</div>
+<h2>std::align(C++11)</h2>
+<p>C++11からはアライメント調整のためにstd::align関数が追加されました。<br>
+ただこちらはアロケータ等のメモリ操作を目的に作られた関数でAPIも少し分かりにくいです。  </p>
+<p>アライメントサイズと要求サイズ、それにポインタとバッファサイズを渡すと
+アライメント調整されたポインタを返してくれます。<br>
+要求サイズを渡しているのは、バッファサイズからあふれるならnullptrを返すようにしているためです。<br>
+詳しくは<a href="https://cpprefjp.github.io/reference/memory/align.html">リファレンス</a>を参考にしてください。</p>
+<p>使い方は以下のようになります。</p>
+<div class="gist">
+    <script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=StdAlign.cpp'></script>
+    <noscript>
+        <pre><code>#include <memory>
+
+int main()
+{
+	char buffer[64];
+	std::size_t remainSize = sizeof(buffer);
+
+	std::size_t alignment = sizeof(int);
+	std::size_t allocSize = sizeof(char);
+
+	void* ptr = buffer;
+	// e.g. ptr = 0x000000B4EDEFF600 remain = 64
+	if( std::align(alignment, allocSize, ptr, remainSize) )
+	{
+		// e.g. ptr = 0x000000B4EDEFF600 remain = 64
+		ptr = static_cast<char*>(ptr) + allocSize;
+		remainSize -= allocSize;
+		// e.g. ptr = 0x000000B4EDEFF601 remain = 63
+	}
+
+	if( std::align(alignment, allocSize, ptr, remainSize) )
+	{
+		// e.g. ptr = 0x000000B4EDEFF604 remain = 60
+		ptr = static_cast<char*>(ptr) + allocSize;
+		remainSize -= allocSize;
+		// e.g. ptr = 0x000000B4EDEFF605 remain = 59
+	}
+
+	return 0;
+}
+
+</code></pre>
     </noscript>
 </div>
     </div><!-- /.entry-content -->
