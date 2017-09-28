@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>Visual Studioで.cppをデフォルトでUTF-8にする</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/cpp/visual-studio-cpp-utf-8.html" rel="bookmark"
+		  title="Permalink to Visual Studioで.cppをデフォルトでUTF-8にする">Visual Studioで.cppをデフォルトでUTF-8にする</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: C++</span>
+<span>| 2017-09-29</span>
+
+</footer><!-- /.post-info -->      <h2>テンプレートファイルをいじる方法</h2>
+<p>Visual Studioで新規作成でソースファイル(.cpp, .h)を作成する場合に使用されるテンプレートとなるファイルが<br>
+Visual Studioのインストールフォルダの中にあります。  </p>
+<p>このテンプレートファイルをUTF-8 BOMにしておくと、新規作成してもUtf-8になっているので誤ってShift JISが紛れ込むことはありません。</p>
+<p>ファイルは</p>
+<ul>
+<li>Visual Studio 2015の場合<ul>
+<li>C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcprojectitems</li>
+</ul>
+</li>
+<li>Visual Studio 2017(Community)の場合<ul>
+<li>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\vcprojectitems</li>
+</ul>
+</li>
+</ul>
+<p>にあるnewc++file.cppとhfile.hがそのテンプレートにあたります。</p>
+<h2>拡張機能を利用する方法</h2>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=jz5.ForceUTF8withBOM-18593">FourceUTF8</a>というのがあります。<br>
+こちらは保存する際にShift JISの際にUTF-8(BOMあり・なし)に自動変換して保存してくれる拡張機能です。  </p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

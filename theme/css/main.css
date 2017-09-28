@@ -262,7 +262,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	#banner #submenu .active a:link, #banner #submenu .active a:visited {
 		background: #008db8;
 		border-top: 1px solid #008db8;
-		-moz-border-top: 1px solid #008db8;
+		div.-moz-border-top: 1px solid #008db8;
 		-webkit-border-top: 1px solid #008db8;
 		color: #fff;
 		text-decoration: none;
@@ -353,7 +353,11 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 }
 
 #content p {
-	margin-bottom: 2em;
+	margin-bottom: 1em;
+}
+
+#content div > ul {
+	margin-bottom: 1em;
 }
 
 /*
