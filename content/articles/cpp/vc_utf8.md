@@ -1,4 +1,4 @@
-title: Visual Studioで.cppをデフォルトでUTF-8にする
+title: Visual StudioでcppファイルをデフォルトでUTF-8にする
 date: 2017-09-29 0:9
 category: C++
 slug: visual-studio-cpp-utf-8
