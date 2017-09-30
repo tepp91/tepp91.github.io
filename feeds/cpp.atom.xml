@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Tepp's note - C++</title><link href="/" rel="alternate"></link><link href="/feeds/cpp.atom.xml" rel="self"></link><id>/</id><updated>2017-09-29T00:09:00+09:00</updated><entry><title>Visual Studioで.cppをデフォルトでUTF-8にする</title><link href="/contents/cpp/visual-studio-cpp-utf-8.html" rel="alternate"></link><published>2017-09-29T00:09:00+09:00</published><updated>2017-09-29T00:09:00+09:00</updated><author><name>Tepp</name></author><id>tag:None,2017-09-29:/contents/cpp/visual-studio-cpp-utf-8.html</id><summary type="html">&lt;h2&gt;テンプレートファイルをいじる方法&lt;/h2&gt;
+&lt;p&gt;Visual Studioで新規作成でソースファイル(.cpp, .h)を作成する場合に使用されるテンプレートとなるファイルが&lt;br&gt;
+Visual Studioのインストールフォルダの中にあります。  &lt;/p&gt;
+&lt;p&gt;このテンプレートファイルをUTF-8 BOMにしておくと、新規作成してもUtf-8になっているので誤ってShift JISが紛れ込むことはありません。&lt;/p&gt;
+&lt;p&gt;ファイルは&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Visual Studio 2015の場合&lt;ul&gt;
+&lt;li&gt;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcprojectitems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Visual Studio 2017(Community)の場合&lt;ul&gt;
+&lt;li&gt;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\vcprojectitems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;にあるnewc++file.cppとhfile.hがそのテンプレートにあたります。&lt;/p&gt;
+&lt;h2&gt;拡張機能を利用する方法 …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;テンプレートファイルをいじる方法&lt;/h2&gt;
+&lt;p&gt;Visual Studioで新規作成でソースファイル(.cpp, .h)を作成する場合に使用されるテンプレートとなるファイルが&lt;br&gt;
+Visual Studioのインストールフォルダの中にあります。  &lt;/p&gt;
+&lt;p&gt;このテンプレートファイルをUTF-8 BOMにしておくと、新規作成してもUtf-8になっているので誤ってShift JISが紛れ込むことはありません。&lt;/p&gt;
+&lt;p&gt;ファイルは&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Visual Studio 2015の場合&lt;ul&gt;
+&lt;li&gt;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcprojectitems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Visual Studio 2017(Community)の場合&lt;ul&gt;
+&lt;li&gt;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\vcprojectitems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;にあるnewc++file.cppとhfile.hがそのテンプレートにあたります。&lt;/p&gt;
+&lt;h2&gt;拡張機能を利用する方法&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://marketplace.visualstudio.com/items?itemName=jz5.ForceUTF8withBOM-18593"&gt;FourceUTF8&lt;/a&gt;というのがあります。&lt;br&gt;
+こちらは保存する際にShift JISの際にUTF-8(BOMあり・なし)に自動変換して保存してくれる拡張機能です。  &lt;/p&gt;</content></entry><entry><title>アライメントを考慮したサイズの取得</title><link href="/contents/cpp/adjust-alignment.html" rel="alternate"></link><published>2017-09-17T01:21:00+09:00</published><updated>2017-09-17T01:21:00+09:00</updated><author><name>Tepp</name></author><id>tag:None,2017-09-17:/contents/cpp/adjust-alignment.html</id><summary type="html">&lt;p&gt;メモリの確保などでアライメントを考慮したサイズを取得したい場合などに使用します。  &lt;/p&gt;
+&lt;h2&gt;ビット演算による求め方&lt;/h2&gt;
+&lt;p&gt;アライメントの値が2の累乗であれば、ビット演算による高速な方法があります。&lt;br&gt;
+アルゴリズムとしては四捨五入と同じような感じです(ギリギリまで上げて落とす)   &lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=AdjustAlignment.cpp'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;/**
+ * アライメントを考慮したサイズを返す
+ * @param num       数値
+ * @param alignment アライメント(2の累乗の必要あり)
+ * @return 調整後のサイズ
+ */
+inline uint32_t AdjustAlignment( uint32_t size, uint32_t alignment )
+{
+	if( size &gt; 0 )
+	{
+		return ( size+(alignment-1) &amp; ~(alignment-1) );
+	}
+	return 0;
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;h2&gt;std::align(C++11)&lt;/h2&gt;
+&lt;p&gt;C++11からはアライメント調整のためにstd::align関数が追加されました。&lt;br&gt;
+ただこちらはアロケータ等のメモリ操作を目的に作られた関数でAPIも少し分かりにくいです。  &lt;/p&gt;
+&lt;p&gt;アライメントサイズと要求サイズ、それにポインタとバッファサイズを渡すと
+アライメント調整されたポインタを返してくれます。&lt;br&gt;
+要求サイズを渡しているのは、バッファサイズからあふれるならnullptrを返すようにしているためです。&lt;br&gt;
+詳しくは&lt;a href="https://cpprefjp.github.io/reference/memory/align.html"&gt;リファレンス&lt;/a&gt;を参考にしてください。&lt;/p&gt;
+&lt;p&gt;使い方は以下のようになります。&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=StdAlign.cpp'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;#include …&lt;/code&gt;&lt;/pre&gt;&lt;/noscript&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;メモリの確保などでアライメントを考慮したサイズを取得したい場合などに使用します。  &lt;/p&gt;
+&lt;h2&gt;ビット演算による求め方&lt;/h2&gt;
+&lt;p&gt;アライメントの値が2の累乗であれば、ビット演算による高速な方法があります。&lt;br&gt;
+アルゴリズムとしては四捨五入と同じような感じです(ギリギリまで上げて落とす)   &lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=AdjustAlignment.cpp'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;/**
+ * アライメントを考慮したサイズを返す
+ * @param num       数値
+ * @param alignment アライメント(2の累乗の必要あり)
+ * @return 調整後のサイズ
+ */
+inline uint32_t AdjustAlignment( uint32_t size, uint32_t alignment )
+{
+	if( size &gt; 0 )
+	{
+		return ( size+(alignment-1) &amp; ~(alignment-1) );
+	}
+	return 0;
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;h2&gt;std::align(C++11)&lt;/h2&gt;
+&lt;p&gt;C++11からはアライメント調整のためにstd::align関数が追加されました。&lt;br&gt;
+ただこちらはアロケータ等のメモリ操作を目的に作られた関数でAPIも少し分かりにくいです。  &lt;/p&gt;
+&lt;p&gt;アライメントサイズと要求サイズ、それにポインタとバッファサイズを渡すと
+アライメント調整されたポインタを返してくれます。&lt;br&gt;
+要求サイズを渡しているのは、バッファサイズからあふれるならnullptrを返すようにしているためです。&lt;br&gt;
+詳しくは&lt;a href="https://cpprefjp.github.io/reference/memory/align.html"&gt;リファレンス&lt;/a&gt;を参考にしてください。&lt;/p&gt;
+&lt;p&gt;使い方は以下のようになります。&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/310c2ac75e136b7229097816613ac57e.js?file=StdAlign.cpp'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;#include &lt;memory&gt;
+
+int main()
+{
+	char buffer[64];
+	std::size_t remainSize = sizeof(buffer);
+
+	std::size_t alignment = sizeof(int);
+	std::size_t allocSize = sizeof(char);
+
+	void* ptr = buffer;
+	// e.g. ptr = 0x000000B4EDEFF600 remain = 64
+	if( std::align(alignment, allocSize, ptr, remainSize) )
+	{
+		// e.g. ptr = 0x000000B4EDEFF600 remain = 64
+		ptr = static_cast&lt;char*&gt;(ptr) + allocSize;
+		remainSize -= allocSize;
+		// e.g. ptr = 0x000000B4EDEFF601 remain = 63
+	}
+
+	if( std::align(alignment, allocSize, ptr, remainSize) )
+	{
+		// e.g. ptr = 0x000000B4EDEFF604 remain = 60
+		ptr = static_cast&lt;char*&gt;(ptr) + allocSize;
+		remainSize -= allocSize;
+		// e.g. ptr = 0x000000B4EDEFF605 remain = 59
+	}
+
+	return 0;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;</content></entry><entry><title>テンプレート引数で異なるクラスを扱う</title><link href="/contents/cpp/template-paramter-2.html" rel="alternate"></link><published>2017-06-27T00:40:00+09:00</published><updated>2017-06-27T00:40:00+09:00</updated><author><name>Tepp</name></author><id>tag:None,2017-06-27:/contents/cpp/template-paramter-2.html</id><summary type="html">&lt;p&gt;templateによるキャストなどの際に使用します。  &lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/fe57371579558c39c506ac379aacdb69.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;#include &lt;iostream&gt;
+
+template&lt;class T&gt;
+class Hoge{
+public:
+	template&lt;class U&gt;
+	Hoge&lt;T&gt;&amp; operator=( const Hoge&lt;U&gt;&amp; rhs );
+
+public:
+	T value_;
+};
+
+template&lt;class T&gt; template&lt;class U&gt;
+inline Hoge&lt;T&gt;&amp; Hoge&lt;T&gt;::operator=( const Hoge&lt;U&gt;&amp; rhs )
+{
+	value_ = static_cast&lt;T&gt;(rhs.value_);
+	return *this;
+}
+
+int main()
+{
+	Hoge&lt;int&gt; hogeInt;
+	hogeInt.value_ = 1;
+
+	Hoge&lt;float&gt; hogeFloat;
+	hogeFloat.value_ = 2.f;
+
+	hogeFloat = hogeInt; // hogeFLoat = 1
+
+	return 0;&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;</summary><content type="html">&lt;p&gt;templateによるキャストなどの際に使用します。  &lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/fe57371579558c39c506ac379aacdb69.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;#include &lt;iostream&gt;
+
+template&lt;class T&gt;
+class Hoge{
+public:
+	template&lt;class U&gt;
+	Hoge&lt;T&gt;&amp; operator=( const Hoge&lt;U&gt;&amp; rhs );
+
+public:
+	T value_;
+};
+
+template&lt;class T&gt; template&lt;class U&gt;
+inline Hoge&lt;T&gt;&amp; Hoge&lt;T&gt;::operator=( const Hoge&lt;U&gt;&amp; rhs )
+{
+	value_ = static_cast&lt;T&gt;(rhs.value_);
+	return *this;
+}
+
+int main()
+{
+	Hoge&lt;int&gt; hogeInt;
+	hogeInt.value_ = 1;
+
+	Hoge&lt;float&gt; hogeFloat;
+	hogeFloat.value_ = 2.f;
+
+	hogeFloat = hogeInt; // hogeFLoat = 1
+
+	return 0;&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;</content></entry><entry><title>2の累乗か判定する</title><link href="/contents/cpp/power-of-two.html" rel="alternate"></link><published>2017-06-20T10:20:00+09:00</published><updated>2017-06-20T10:20:00+09:00</updated><author><name>Tepp</name></author><id>tag:None,2017-06-20:/contents/cpp/power-of-two.html</id><summary type="html">&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/a4754392f6c51b80333f11afd9bc4fd2.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;bool IsPowerOfTwo(uint32_t value)
+{
+    return value &amp;&amp; !(value &amp; (value-1))
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;p&gt;2の累乗ということは、ビット演算的には1が一つだけの状態です。  &lt;/p&gt;
+&lt;p&gt;2の累乗の場合、&lt;br&gt;
+-1すると繰り下がって下位ビットが全部1になるため、AND演算すると0になります。  &lt;/p&gt;
+&lt;p&gt;2の累乗以外なら、&lt;br&gt;
+-1しても桁下がり発生しないため、AND演算にすれば1以上になります。  &lt;/p&gt;
+&lt;p&gt;ただ0はアンダーフローによりうまくいかないので、最初に弾いています。  &lt;/p&gt;</summary><content type="html">&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/a4754392f6c51b80333f11afd9bc4fd2.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;bool IsPowerOfTwo(uint32_t value)
+{
+    return value &amp;&amp; !(value &amp; (value-1))
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;p&gt;2の累乗ということは、ビット演算的には1が一つだけの状態です。  &lt;/p&gt;
+&lt;p&gt;2の累乗の場合、&lt;br&gt;
+-1すると繰り下がって下位ビットが全部1になるため、AND演算すると0になります。  &lt;/p&gt;
+&lt;p&gt;2の累乗以外なら、&lt;br&gt;
+-1しても桁下がり発生しないため、AND演算にすれば1以上になります。  &lt;/p&gt;
+&lt;p&gt;ただ0はアンダーフローによりうまくいかないので、最初に弾いています。  &lt;/p&gt;</content></entry></feed>

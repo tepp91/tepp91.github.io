@@ -307,7 +307,6 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 #featured ul.category {
     display: inline-block;
     vertical-align: top;
-    width: 40%;
     margin-bottom: 2em;
 }
 
