@@ -31,6 +31,8 @@ DISPLAY_SEARCH_FORM = False
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 CATEGORY_SUBSTITUTIONS = (('C++', 'cpp'),)
 
+GOOGLE_ANALYTICS = 'UA-80111091-2'
+
 # Themes
 THEME = 'themes/blueidea'
 
