@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>EventのNullチェックを省略する</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/csharp/do-not-null-check-of-event.html" rel="bookmark"
+		  title="Permalink to EventのNullチェックを省略する">EventのNullチェックを省略する</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: C#</span>
+<span>| 2017-11-26</span>
+
+</footer><!-- /.post-info -->      <p>イベント作成時に、１つもイベントに登録がないまま呼び出してしまうと例外が発生してしまいます。</p>
+<p>このため、呼び出す前にヌルチェッックをしなければいけないのですが、<br>
+初期化時に空のdelegateを登録してあげることで、その手間を回避することが可能です。</p>
+<div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">Hoge</span>
+<span class="p">{</span>
+    <span class="k">delegate</span> <span class="k">void</span> <span class="nf">TestHandler</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">Hoge</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">event</span> <span class="n">TestHandler</span> <span class="n">TestEvent</span> <span class="p">=</span> <span class="k">delegate</span> <span class="p">{};</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">Exec</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">TestEvent</span><span class="p">();</span> <span class="c1">// 空のdelegateがあるのでnullチェックしなくていい</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-80111091-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>
