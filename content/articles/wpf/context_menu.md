@@ -12,7 +12,7 @@ WPFでListViewにコンテキストメニューを表示する場合、最も手
 下記のコードではContextMenuのMenuItemに対象アイテムを引数にするコマンドを表示する例の一部です。<!--
 -->サンプルプロジェクトは[GitHub](https://github.com/tepp91/WPFSampleCollection/tree/master/ListViewContextMenu)にアップしています。
 
-ContextMenu.TagはControl的には意味関係ない任意の値を入れられるプロパティです。今回はこれを使ってContextMenuにListViewのDataContextを受け渡しています。
+ContextMenu.TagはControl的には意味のない任意の値を入れられるプロパティです。今回はこれを使ってContextMenuにListViewのDataContextを受け渡しています。
 
 ```xaml
 <ListView ItemsSource="{Binding DogList}">
