@@ -39,7 +39,7 @@
 -->この場合、ListViewItem.ContextMenuはListViewのDataContextを見てくれないので、ListViewItemにコマンドを設定するには、明示的にDataContextを指定する必要があります。</p>
 <p>下記のコードではContextMenuのMenuItemに対象アイテムを引数にするコマンドを表示する例の一部です。<!--
 -->サンプルプロジェクトは<a href="https://github.com/tepp91/WPFSampleCollection/tree/master/ListViewContextMenu">GitHub</a>にアップしています。</p>
-<p>ContextMenu.TagはControl的には意味関係ない任意の値を入れられるプロパティです。今回はこれを使ってContextMenuにListViewのDataContextを受け渡しています。</p>
+<p>ContextMenu.TagはControl的には意味のない任意の値を入れられるプロパティです。今回はこれを使ってContextMenuにListViewのDataContextを受け渡しています。</p>
 <div class="highlight"><pre><span></span><span class="nt">&lt;ListView</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding DogList}&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;ListView.ItemContainerStyle&gt;</span>
         <span class="nt">&lt;Style</span> <span class="na">TargetType=</span><span class="s">&quot;{x:Type ListViewItem}&quot;</span><span class="nt">&gt;</span>
