@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>ListViewにContextMenuを表示する</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/wpf/listview-contextmenu.html" rel="bookmark"
+		  title="Permalink to ListViewにContextMenuを表示する">ListViewにContextMenuを表示する</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: WPF</span>
+<span>| 2017-12-06</span>
+
+</footer><!-- /.post-info -->      <p>WPFでListViewにコンテキストメニューを表示する場合、最も手っ取り早いのはListView.ContextMenuに値を設定する事ですが、この選択はよくありません。<!--
+-->ListView.ContextMenuはListView全体に対して表示されるので、ヘッダー部分を右クリックしてもコンテキストメニューが出てしまいます。</p>
+<p>きちんとListViewItemにコンテキストメニューを表示するには、ListView.ItemContainerStlyeを用いてListViewItem.ContextMenuに値を設定する必要があります。<!--
+-->この場合、ListViewItem.ContextMenuはListViewのDataContextを見てくれないので、ListViewItemにコマンドを設定するには、明示的にDataContextを指定する必要があります。</p>
+<p>下記のコードではContextMenuのMenuItemに対象アイテムを引数にするコマンドを表示する例の一部です。<!--
+-->サンプルプロジェクトは<a href="https://github.com/tepp91/WPFSampleCollection/tree/master/ListViewContextMenu">GitHub</a>にアップしています。</p>
+<p>ContextMenu.TagはControl的には意味関係ない任意の値を入れられるプロパティです。今回はこれを使ってContextMenuにListViewのDataContextを受け渡しています。</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;ListView</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding DogList}&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ListView.ItemContainerStyle&gt;</span>
+        <span class="nt">&lt;Style</span> <span class="na">TargetType=</span><span class="s">&quot;{x:Type ListViewItem}&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Setter</span>
+                <span class="na">Property=</span><span class="s">&quot;Tag&quot;</span>
+                <span class="na">Value=</span><span class="s">&quot;{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListView}}&quot;</span> <span class="nt">/&gt;</span>
+
+            <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">&quot;ContextMenu&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;Setter.Value&gt;</span>
+                    <span class="nt">&lt;ContextMenu</span> <span class="na">DataContext=</span><span class="s">&quot;{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}&quot;</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;MenuItem</span>
+                            <span class="na">Header=</span><span class="s">&quot;Select&quot;</span>
+                            <span class="na">Command=</span><span class="s">&quot;{Binding SelectCommand}&quot;</span>
+                            <span class="na">CommandParameter=</span><span class="s">&quot;{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}&quot;</span> <span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/ContextMenu&gt;</span>
+                <span class="nt">&lt;/Setter.Value&gt;</span>
+            <span class="nt">&lt;/Setter&gt;</span>
+        <span class="nt">&lt;/Style&gt;</span>
+    <span class="nt">&lt;/ListView.ItemContainerStyle&gt;</span>
+<span class="nt">&lt;/ListView&gt;</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-80111091-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>
