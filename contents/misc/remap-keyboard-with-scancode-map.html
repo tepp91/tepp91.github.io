@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>Scancode Mapによるキー割り当ての変更</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/misc/remap-keyboard-with-scancode-map.html" rel="bookmark"
+		  title="Permalink to Scancode Mapによるキー割り当ての変更">Scancode Mapによるキー割り当ての変更</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: Misc</span>
+<span>| 2018-03-17</span>
+
+</footer><!-- /.post-info -->      <h2>Scancode Map</h2>
+<p>キーボードのキー割り当ての変更をレジストリのScancode Mapを変更することで可能になります。</p>
+<p>Scancodeは、キーボードでキーが入力された際にキーボードからCPUに送られてるコードの事です。<br>
+Scancode MapはScancodeの変換テーブルのことで、これを設定することでキー割り当ての変更をすることが可能です。</p>
+<p>Scacode Mapはレジストリの<br>
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout<br>
+の下に「Scancode Map」というバイナリ値で作成します。</p>
+<h2>フォーマット</h2>
+<p>Scancode Mapはヘッダーの後ろにキー割り当ての情報を入れ、最後にキー割り当て終端を意味するヌル値(0のこと)を入れます。</p>
+<p>ヘッダーに記入するキーの割り当て数（マッピング数）ですが、これは最後に入れるヌル値を含める事と、<!--
+-->Windowsはリトルエンディアンのため、値が前詰めになることに注意してください。</p>
+<table>
+<tr><td>ヘッダー：バージョン（すべて0）</td><td>4 byte</td></tr>
+<tr><td>ヘッダー：フラグ（すべて0）</td><td>4 byte</td></tr>
+<tr><td>ヘッダー：マッピング数</td><td>4 byte</td></tr>
+<tr><td>キー割り当て</td><td>--</td></tr>
+<tr><td>Null</td><td>4 byte</td></tr>
+</table>
+
+<p>キー割り当ては、4byte値で表現し、前2byteが変換前のキー、後2byteで変換後のキーを表します。</p>
+<p>例えば、Caps Lock(0x3A)を左Ctrl(0x1D)に変換する場合、0x003A001Dとなりますが、<!--
+-->これもリトルエンディアンを意識する必要があるので、書く時は「1D 00 3A 00」になります。</p>
+<h2>例：「左Ctrl &lt;-&gt; Caps lock」「無変換 -&gt; Enter」「変換 -&gt; Back Space」</h2>
+<h3>Scancode Map</h3>
+<div class="highlight"><pre><span></span>00 00 00 00 00 00 00 00
+05 00 00 00 1D 00 3A 00
+3A 00 1D 00 1C 00 7B 00
+0E 00 79 00 00 00 00 00
+</pre></div>
+
+
+<h3>解説</h3>
+<table>
+<tr><th>バイナリ</th><th>値</th><th>説明</th></tr>
+<tr><td>00 00 00 00</td><td>0x00000000</td><td>バージョン</td></tr>
+<tr><td>00 00 00 00</td><td>0x00000000</td><td>フラグ</td></tr>
+<tr><td>05 00 00 00</td><td>0x00000005</td><td>マッピング数</td></tr>
+<tr><td>1D 00 3A 00</td><td>0x003A001D</td><td>Caps Lock(0x1D) -> Enter(0x1D)</td></tr>
+<tr><td>3A 00 1D 00</td><td>0x001D003A</td><td>Enter(0x1D) -> Caps Lock(0x1D)</td></tr>
+<tr><td>1C 00 7B 00</td><td>0x007B001C</td><td>無変換(0x7B) -> Enter(0x1C)</td></tr>
+<tr><td>0E 00 79 00</td><td>0x0079000E</td><td>変換(0x79) -> Back Space(0x0E)</td></tr>
+<tr><td>00 00 00 00</td><td>0x00000000</td><td>終端ヌル値</td></tr>
+</table>
+
+<h3>Scancode</h3>
+<table>
+<tr><td>左Ctrl</td><td>0x1D</td></tr>
+<tr><td>Caps  Lock</td><td>0x3A</td></tr>
+<tr><td>Enter</td><td>0x1C</td></tr>
+<tr><td>無変換</td><td>7B</td></tr>
+<tr><td>Back Space</td><td>0x0E</td></tr>
+<tr><td>変換</td><td>0x79</td></tr>
+</table>
+
+<h2>参考</h2>
+<p><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/keyboard-and-mouse-class-drivers#scan-code-mapper-for-keyboards">MSDN Keyboard and mouse class drivers - Scan code mapper for keyboards</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-80111091-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>

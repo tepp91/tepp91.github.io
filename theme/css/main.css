@@ -110,24 +110,6 @@ div.note {
    max-width: 300px;
 }
 
-/* Tables */
-table {margin: .5em auto 1.5em auto; width: 98%;}
-
-	/* Thead */
-	thead th {padding: .5em .4em; text-align: left;}
-	thead td {}
-
-	/* Tbody */
-	tbody td {padding: .5em .4em;}
-	tbody th {}
-
-	tbody .alt td {}
-	tbody .alt th {}
-
-	/* Tfoot */
-	tfoot th {}
-	tfoot td {}
-
 /* HTML5 tags */
 header, section, footer,
 aside, nav, article, figure {
@@ -351,13 +333,34 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	margin-top: 0;
 }
 
-#content p {
+#content h3 {
+	font-size: 1em;
+	font-weight: 400;
+	padding-bottom: .5em;
+	border-bottom: 1px solid #ccc;
+}
+
+#content p, table {
 	margin-bottom: 1em;
 }
 
 #content div > ul {
 	margin-bottom: 1em;
 }
+
+#content table, th, td {
+	border: 1px solid #000000;
+	border-collapse: collapse;
+}
+
+#content th {
+	font-weight: bold;
+}
+
+#content th, td {
+	padding: 2px 4px 2px 4px;
+}
+
 
 /*
 	Extras
