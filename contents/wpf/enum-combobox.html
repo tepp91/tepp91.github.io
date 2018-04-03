@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="japanese">
+<head>
+        <meta charset="utf-8" />
+        <title>列挙体をコンボボックスにBindingする</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Tepp's note </a></h1>
+                <nav><ul>
+                        <li><a href="/pages/about-me.html">About me</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/contents/wpf/enum-combobox.html" rel="bookmark"
+		  title="Permalink to 列挙体をコンボボックスにBindingする">列挙体をコンボボックスにBindingする</a>
+	  </h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<span>category: WPF</span>
+<span>| 2018-04-03</span>
+
+</footer><!-- /.post-info -->      <p>マークアップ拡張を利用することで、列挙体をコンボボックスにBindingすることができます。<br>
+また、今回は列挙体に任意の文字列を紐付けて表示するようにします。</p>
+<p>ObjectDataProviderを利用する方法もありますが、アプリ内で利用する度にObjectDataProviderを定義する必要があり冗長性があるため、<!--
+-->マークアップ拡張のほうが好みです。</p>
+<p>サンプルプロジェクトは<a href="https://github.com/tepp91/WPFSampleCollection/tree/master/EnumComboBox">GitHub</a>にアップしています。</p>
+<h2>列挙体</h2>
+<p>列挙体を定義する際に、Description属性を使用して列挙体の各値に文字列を紐付けておきます。<!--
+-->今回はDisplay属性を使用していますが、Description属性等でも問題ありません（コンバーター要調整）</p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">EnumComboBox</span>
+<span class="p">{</span>
+    <span class="k">enum</span> <span class="n">Dogs</span>
+    <span class="p">{</span>
+<span class="na">        [Display(Name = &quot;Golden Retriver&quot;)]</span>
+        <span class="n">GoldenRetriver</span><span class="p">,</span>
+
+<span class="na">        [Display(Name = &quot;Miniture Dachshund&quot;)]</span>
+        <span class="n">MinitureDachshund</span><span class="p">,</span>
+
+<span class="na">        [Display(Name = &quot;Border Collie&quot;)]</span>
+        <span class="n">BorderCollie</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>コンバーター</h2>
+<p>列挙体からDisplay属性に設定した文字列に変換するためのコンバートを用意します。</p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Globalization</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Windows.Data</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Reflection</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">EnumComboBox</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">EnumDisplayConverter</span> <span class="p">:</span> <span class="n">IValueConverter</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">object</span> <span class="nf">Convert</span><span class="p">(</span><span class="kt">object</span> <span class="k">value</span><span class="p">,</span> <span class="n">Type</span> <span class="n">targetType</span><span class="p">,</span> <span class="kt">object</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">CultureInfo</span> <span class="n">culture</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">FieldInfo</span> <span class="n">field</span> <span class="p">=</span> <span class="k">value</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">GetField</span><span class="p">(</span><span class="k">value</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+            <span class="n">DisplayAttribute</span> <span class="n">attr</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="n">GetCustomAttribute</span><span class="p">&lt;</span><span class="n">DisplayAttribute</span><span class="p">&gt;();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">attr</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">attr</span><span class="p">.</span><span class="n">Name</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">value</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">object</span> <span class="nf">ConvertBack</span><span class="p">(</span><span class="kt">object</span> <span class="k">value</span><span class="p">,</span> <span class="n">Type</span> <span class="n">targetType</span><span class="p">,</span> <span class="kt">object</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">CultureInfo</span> <span class="n">culture</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">NotImplementedException</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>マークアップ拡張</h2>
+<p>列挙体の型からリストを作成するマークアップ拡張です。</p>
+<div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Windows.Markup</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">EnumComboBox</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">EnumListExtension</span> <span class="p">:</span> <span class="n">MarkupExtension</span>
+    <span class="p">{</span>
+        <span class="k">private</span> <span class="n">Type</span> <span class="n">enumType_</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="nf">EnumListExtension</span><span class="p">(</span><span class="n">Type</span> <span class="n">type</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">enumType_</span> <span class="p">=</span> <span class="n">type</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">override</span> <span class="kt">object</span> <span class="nf">ProvideValue</span><span class="p">(</span><span class="n">IServiceProvider</span> <span class="n">serviceProvider</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Enum</span><span class="p">.</span><span class="n">GetValues</span><span class="p">(</span><span class="n">enumType_</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Xaml</h2>
+<p>上記の3つを利用したXamlは以下のように書きます。</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;ComboBox</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Source={local:EnumList {x:Type local:Dogs}}}&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ComboBox.Resources&gt;</span>
+        <span class="nt">&lt;local:EnumDisplayConverter</span> <span class="na">x:Key=</span><span class="s">&quot;EnumDisplayConv&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/ComboBox.Resources&gt;</span>
+
+    <span class="nt">&lt;ComboBox.ItemTemplate&gt;</span>
+        <span class="nt">&lt;DataTemplate&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;{Binding Converter={StaticResource EnumDisplayConv}}&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/DataTemplate&gt;</span>
+    <span class="nt">&lt;/ComboBox.ItemTemplate&gt;</span>
+<span class="nt">&lt;/ComboBox&gt;</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                    <a href="https://twitter.com/DevTepp"></a>
+                    <a href="https://github.com/tepp91"></a>
+                    <a href="http://tepp.hatenablog.jp/"></a>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>(c) 2017 Tepp.  Powered by <a href="http://getpelican.com/">Pelican</a>.
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-80111091-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>
