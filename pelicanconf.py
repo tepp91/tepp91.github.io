@@ -11,7 +11,7 @@ SITENAME = "Tepp's note"
 SITEURL = ''
 SITEDESC = "ソフトウェア（主にゲーム）開発中に調べた事を、備忘録として記録しているWebサイトです。"
 TIMEZONE = 'Asia/Tokyo'
-DEFAULT_LANG = 'Japanese'
+DEFAULT_LANG = 'ja'
 
 PATH = 'content'
 
@@ -29,7 +29,8 @@ DISPLAY_CATEGORIES_ON_SUBMENU = False
 DISPLAY_SEARCH_FORM = False
 
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
-CATEGORY_SUBSTITUTIONS = (('C++', 'cpp'),('C#', 'csharp'),)
+
+SLUG_REGEX_SUBSTITUTIONS = [('C\+\+', 'cpp'), ('C#', 'csharp')]
 
 GOOGLE_ANALYTICS = 'UA-80111091-2'
 

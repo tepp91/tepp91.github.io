@@ -1,4 +1,5 @@
 title: About me
+slug: about-me
 
 HN: Tepp  
 所在地: 東京  
