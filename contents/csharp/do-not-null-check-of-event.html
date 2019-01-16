@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="japanese">
+<html lang="ja">
 <head>
         <meta charset="utf-8" />
         <title>EventのNullチェックを省略する</title>
@@ -31,11 +31,33 @@
     <div class="entry-content">
 <footer class="post-info">
 <span>category: C#</span>
-<span>| 2017-11-26</span>
+<span>| 2019-01-16</span>
 
-</footer><!-- /.post-info -->      <p>イベント作成時に、１つもイベントに登録がないまま呼び出してしまうと例外が発生してしまいます。</p>
-<p>このため、呼び出す前にヌルチェッックをしなければいけないのですが、<br>
-初期化時に空のdelegateを登録してあげることで、その手間を回避することが可能です。</p>
+</footer><!-- /.post-info -->      <p>イベント作成時に、１つもイベントに登録がないまま呼び出してしまうと例外が発生してしまいます。<br>
+このため、呼び出す前にヌルチェックをしなければいけませんが、それを幾つかの方法でスマートに行う事が出来ます。</p>
+<h2>Null条件演算子を利用する</h2>
+<p>C# 6.0からNull条件演算子(?)が実装されたことで、nullチェックに関する記述が格段に楽になりました。</p>
+<p>?演算子はnullチェックをしてnullならそのままnullを返すという演算子です。
+下記の例ではTestEventのnullチェックを行い、nullだったらすぐにnullを返すため、Invokeが実行されることはありません。</p>
+<div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">Hoge</span>
+<span class="p">{</span>
+    <span class="k">delegate</span> <span class="k">void</span> <span class="nf">TestHandler</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">Hoge</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">event</span> <span class="n">TestHandler</span> <span class="n">TestEvent</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">Exec</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">TestEvent</span><span class="p">?.</span><span class="n">Invoke</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>空のdelegateを登録する</h2>
+<p>旧式の方法として、空のdelegateを事前に登録しておくという方法もあります。</p>
 <div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">Hoge</span>
 <span class="p">{</span>
     <span class="k">delegate</span> <span class="k">void</span> <span class="nf">TestHandler</span><span class="p">();</span>
